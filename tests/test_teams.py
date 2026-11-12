@@ -45,3 +45,19 @@ class TestIsDuplicateTeamName(unittest.TestCase):
     def test_existing_team_name_is_duplicate(self):
         self.assertTrue(is_duplicate_team_name("Red Comets", self.teams)
         )
+
+    def test_existing_team_name_is_duplicate_lowercase(self):
+        self.assertTrue(is_duplicate_team_name("red comets", self.teams))
+
+    def test_existing_team_name_is_duplicate_uppercase(self):
+        self.assertTrue(is_duplicate_team_name("RED COMETS", self.teams))
+
+    
+    def test_existing_team_name_is_duplicate_whitespace(self):
+        self.assertTrue(is_duplicate_team_name("  Red Comets   ", self.teams)
+        )
+
+    def test_existing_team_name_is_duplicate_unique_name(self):
+        self.assertFalse(is_duplicate_team_name("Yellow Lions", self.teams))
+
+    
