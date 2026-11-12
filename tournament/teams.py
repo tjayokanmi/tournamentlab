@@ -16,3 +16,17 @@ def is_duplicate_team_name(name: str, teams: dict) -> bool:
             return True
     return False
 
+
+def generate_team_id(teams):
+    teams_store = []
+
+    if len(teams) == 0:
+        return "TM001"
+    
+    for team in teams:
+        team_num = team[2:]
+        
+        teams_store.append(int(team_num))
+    
+    highest = max(teams_store) + 1
+    return f"TM{highest:03d}"
