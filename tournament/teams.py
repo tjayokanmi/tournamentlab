@@ -30,3 +30,21 @@ def generate_team_id(teams):
     
     highest = max(teams_store) + 1
     return f"TM{highest:03d}"
+
+
+def register_team(name, teams):
+   
+        name = validate_team_name(name)
+        if is_duplicate_team_name(name,teams):
+            raise ValueError("This team name already exists")
+                    
+        new_team_id = generate_team_id(teams)
+        new_team = {
+            "id" : new_team_id,
+            "name" : name
+        }
+
+        teams[new_team_id] = new_team
+
+        return new_team 
+    
