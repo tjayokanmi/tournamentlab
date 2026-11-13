@@ -5,12 +5,13 @@ def generate_fixtures(teams):
         raise ValueError("Tournament must have between 4 and 8 teams")
 
     counter = 1
-    match_id = f"M{counter:03d}"
+    
 
     teams_id = list(teams.keys())
 
     for index, team_id in enumerate(teams_id):
         for opponent_id in teams_id[index + 1:]:
+            match_id = f"M{counter:03d}"
             print(team_id, "vs", opponent_id)
 
             fixture = {
@@ -21,9 +22,8 @@ def generate_fixtures(teams):
                 "home_score" : None,
                 "away_score" : None
             }
-
-    fixtures[match_id] = fixture
-    counter += 1
+            fixtures[match_id] = fixture
+            counter += 1
     return fixtures
 
     
