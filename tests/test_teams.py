@@ -1,5 +1,5 @@
 import unittest
-from tournament.teams import validate_team_name, is_duplicate_team_name, generate_team_id
+from tournament.teams import validate_team_name, is_duplicate_team_name, generate_team_id, register_team
 
 
 
@@ -82,3 +82,37 @@ class TestGenerateNewID(unittest.TestCase):
     
     def test_generate_team_id_uses_highest_existing_id(self):
         self.assertEqual(generate_team_id(self.teams1), "TM013")
+
+
+
+class TestRegisterTeam(unittest.TestCase):
+    def setUp(self):
+        self.teams = {
+            "TM001": {"id": "TM001", "name": "Red Comets"},
+            "TM002": {"id": "TM002", "name": "Blue Hawks"}
+        }
+
+        self.empty = {}
+
+    def test_register_new_team(self):
+        self.assertEqual(register_team("Yellow Lions", self.teams), {"id" : "TM003", "name" : "Yellow Lions"})
+        self.assertIn("TM003", self.teams)
+    
+    def test_register_new_team_empty_dic(self):
+        self.assertEqual(register_team("Yellow Lions", self.empty), {"id" : "TM001", "name" : "Yellow Lions"})
+        self.assertIn("TM001", self.empty)
+
+    def test_duplicate_register_team(self):
+        original_teams = self.teams.copy()
+        with self.assertRaises(ValueError):
+            register_team("Red Comets", self.teams)
+        
+        self.assertEqual(self.teams, original_teams)
+
+
+    def test_register_invalid_team(self):
+        original_teams = self.teams.copy()
+        with self.assertRaises(ValueError):
+            register_team("R", self.teams)
+        
+        self.assertEqual(self.teams, original_teams)
