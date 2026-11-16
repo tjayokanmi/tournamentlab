@@ -12,7 +12,6 @@ def generate_fixtures(teams):
     for index, team_id in enumerate(teams_id):
         for opponent_id in teams_id[index + 1:]:
             match_id = f"M{counter:03d}"
-            print(team_id, "vs", opponent_id)
 
             fixture = {
                 "id" : match_id,

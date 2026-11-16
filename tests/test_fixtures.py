@@ -49,3 +49,25 @@ class TestFixturesGeneration(unittest.TestCase):
         with self.assertRaises(ValueError):
             generate_fixtures(self.teams_9)
 
+    def test_no_duplicate_pairings(self):
+        fixtures = generate_fixtures(self.teams_4)
+        seen_pairs = set()
+
+        for fixture in fixtures.values():
+            home_id = fixture["home_id"]
+            away_id = fixture["away_id"]
+
+            self.assertNotEqual(home_id, away_id)
+
+            pair = tuple(sorted((home_id, away_id)))
+
+            self.assertNotIn(pair, seen_pairs)
+
+            seen_pairs.add(pair)
+
+    def test_fixtures_generation_dictionary(self):
+        copied = self.teams_4.copy()
+
+        generate_fixtures(self.teams_4)
+
+        self.assertEqual(self.teams_4, copied)
