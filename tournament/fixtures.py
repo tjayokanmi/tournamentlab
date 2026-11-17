@@ -27,9 +27,19 @@ def generate_fixtures(teams):
 
     
 def record_result(fixtures, fixture_id, home_score, away_score):
-    if 
-    type(home_score) is int and 
-    type(away_score) is int and 
-    home_score >= 0 and 
-    away_score >= 0
-    
+    if fixture_id not in fixtures: 
+        raise ValueError("Fixture does not exist")
+    if fixtures[fixture_id]["status"] == "played":
+        raise ValueError("Fixture has already been played")    
+
+    if not (
+        type(home_score) is int and 
+        type(away_score) is int and 
+        home_score >= 0 and 
+        away_score >= 0
+    ):              
+        raise ValueError("Enter a valid number for the scores")
+        
+    fixtures[fixture_id]["home_score"] = home_score
+    fixtures[fixture_id]["away_score"] = away_score
+    fixtures[fixture_id]["status"] = "played"
