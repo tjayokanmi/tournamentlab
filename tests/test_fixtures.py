@@ -71,3 +71,6 @@ class TestFixturesGeneration(unittest.TestCase):
         generate_fixtures(self.teams_4)
 
         self.assertEqual(self.teams_4, copied)
+
+class TestRecordResult(unittest.TestCase):
+    def test_record_result():
