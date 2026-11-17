@@ -1,5 +1,7 @@
 import unittest
-from tournament.fixtures import generate_fixtures
+from tournament.fixtures import generate_fixtures, record_result
+from copy import deepcopy
+
 
 class TestFixturesGeneration(unittest.TestCase):
     def setUp(self):
@@ -73,4 +75,38 @@ class TestFixturesGeneration(unittest.TestCase):
         self.assertEqual(self.teams_4, copied)
 
 class TestRecordResult(unittest.TestCase):
-    def test_record_result():
+    def setUp(self):
+        self.fixtures = {
+    "M001": {
+        "id": "M001",
+        "home_id": "TM001",
+        "away_id": "TM002",
+        "status": "pending",
+        "home_score": None,
+        "away_score": None
+    },
+    "M002": {
+        "id": "M002",
+        "home_id": "TM001",
+        "away_id": "TM003",
+        "status": "pending",
+        "home_score": None,
+        "away_score": None
+    },
+    "M003": {
+        "id": "M003",
+        "home_id": "TM002",
+        "away_id": "TM003",
+        "status": "played",
+        "home_score": 2,
+        "away_score": 1
+    }
+}
+
+    def test_record_result_already_played(self):
+        copied = deepcopy(self.fixtures)
+
+        with self.assertRaises(ValueError):
+            record_result(self.fixtures, "M003", 2, 1)
+
+        self.assertEqual(self.fixtures, copied)
