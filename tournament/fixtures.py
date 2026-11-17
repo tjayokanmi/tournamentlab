@@ -26,3 +26,10 @@ def generate_fixtures(teams):
     return fixtures
 
     
+def record_result(fixtures, fixture_id, home_score, away_score):
+    if 
+    type(home_score) is int and 
+    type(away_score) is int and 
+    home_score >= 0 and 
+    away_score >= 0
+    
