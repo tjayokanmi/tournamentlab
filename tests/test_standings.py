@@ -124,6 +124,39 @@ class TestCalculateStandings(unittest.TestCase):
 
         actual_order = [team["id"] for team in results]
 
-        expected_order = ["TM001", "TM002", "TM003", "TM004"]
+        expected_order = ["TM001", "TM003", "TM002", "TM004"]
+
+        self.assertEqual(actual_order, expected_order)
+
+    def test_standings_alphabetical_tiebreaker(self):
+        fixtures = {
+            "M001": {
+                "id": "M001",
+                "home_id": "TM001",
+                "away_id": "TM002",
+                "status": "played",
+                "home_score": 0,
+                "away_score": 0
+            },
+            "M002": {
+                "id": "M002",
+                "home_id": "TM003",
+                "away_id": "TM004",
+                "status": "played",
+                "home_score": 0,
+                "away_score": 0
+            }
+        }
+
+        results = calculate_standings(self.teams, fixtures)
+
+        actual_order = [team["name"] for team in results]
+
+        expected_order = [
+            "Black Panthers",
+            "Blue Hawks",
+            "Golden Eagles",
+            "Red Comets"
+        ]
 
         self.assertEqual(actual_order, expected_order)
