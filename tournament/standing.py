@@ -1,21 +1,6 @@
 def calculate_standings(teams, fixtures):
-    teams = {
-    "TM001": {"id": "TM001", "name": "Red Comets"},
-    "TM002": {"id": "TM002", "name": "Blue Hawks"}
-}
-
-    fixtures = {
-    "M001": {
-        "id": "M001",
-        "home_id": "TM001",
-        "away_id": "TM002",
-        "status": "pending",
-        "home_score": None,
-        "away_score": None
-    }
-}
-        
     standing = {}
+    
     for team_id, team  in teams.items():
         standing[team_id] = {
             "id": team["id"],
@@ -34,4 +19,43 @@ def calculate_standings(teams, fixtures):
         if fixture["status"] != "played":
             continue
 
+        home_id = fixture["home_id"]
+        away_id = fixture["away_id"]
+        home_score = fixture["home_score"]
+        away_score = fixture["away_score"]
+        
+        
+        standing[home_id]['MP'] += 1
+        standing[away_id]['MP'] += 1
+        standing[home_id]['GF'] += home_score
+        standing[home_id]['GA'] += away_score
+        standing[away_id]['GF'] += away_score
+        standing[away_id]['GA'] += home_score
+        
+
+        if home_score > away_score:
+            standing[home_id]['Pts'] += 3
+           
+            standing[home_id]['W'] += 1
+            standing[away_id]['L'] += 1
+
+
+
+        elif home_score == away_score:
+            standing[home_id]['Pts'] += 1
+            standing[away_id]['Pts'] += 1
+            standing[home_id]['D'] += 1
+            standing[away_id]['D'] += 1
+                    
+        else:
+            standing[away_id]['Pts'] += 3
+            standing[home_id]['L'] += 1
+            standing[away_id]['W'] += 1
+    
+    standing[away_id]['GD'] += standing[away_id]['GF'] - standing[away_id]['GA']
+    standing[home_id]['GD'] += standing[home_id]['GF'] - standing[home_id]['GA']
+
+    for team_id, team in standing.items():
+        team['GD'] = team['GF'] - team['GA']
+        
     return standing
