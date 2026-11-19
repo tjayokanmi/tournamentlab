@@ -51,11 +51,18 @@ def calculate_standings(teams, fixtures):
             standing[away_id]['Pts'] += 3
             standing[home_id]['L'] += 1
             standing[away_id]['W'] += 1
-    
-    standing[away_id]['GD'] += standing[away_id]['GF'] - standing[away_id]['GA']
-    standing[home_id]['GD'] += standing[home_id]['GF'] - standing[home_id]['GA']
-
+        
     for team_id, team in standing.items():
         team['GD'] = team['GF'] - team['GA']
-        
-    return standing
+
+    ranked_standings = sorted(
+            standing.values(),
+            key= lambda team: (
+                -team["Pts"],
+                -team["GD"],
+                -team["GF"],
+                team["name"].casefold()
+            )
+        )
+            
+    return ranked_standings
