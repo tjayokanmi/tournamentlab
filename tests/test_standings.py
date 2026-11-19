@@ -1,5 +1,6 @@
 from tournament.standings import calculate_standings
 import unittest  
+from copy import deepcopy
 
 class TestCalculateStandings(unittest.TestCase):
     def setUp(self):
@@ -160,3 +161,41 @@ class TestCalculateStandings(unittest.TestCase):
         ]
 
         self.assertEqual(actual_order, expected_order)
+
+    def test_pending_fixtures_are_ignored(self):
+        pending_fixtures = {
+            "M001": {
+                "id": "M001",
+                "home_id": "TM001",
+                "away_id": "TM002",
+                "status": "pending",
+                "home_score": None,
+                "away_score": None
+            }
+        }
+
+        results = calculate_standings(self.teams, pending_fixtures)
+
+        expected_stats = {
+            "MP": 0,
+            "W": 0,
+            "D": 0,
+            "L": 0,
+            "GF": 0,
+            "GA": 0,
+            "GD": 0,
+            "Pts": 0
+        }
+
+        for team in results:
+            for stat, expected_value in expected_stats.items():
+                self.assertEqual(team[stat], expected_value)
+
+    def test_calculate_standings_does_not_modify_inputs(self):
+        original_teams = deepcopy(self.teams)
+        original_fixtures = deepcopy(self.fixtures1)
+
+        calculate_standings(self.teams, self.fixtures1)
+
+        self.assertEqual(self.teams, original_teams)
+        self.assertEqual(self.fixtures1, original_fixtures)
