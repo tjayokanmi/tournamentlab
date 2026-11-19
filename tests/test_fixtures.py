@@ -110,3 +110,12 @@ class TestRecordResult(unittest.TestCase):
             record_result(self.fixtures, "M003", 2, 1)
 
         self.assertEqual(self.fixtures, copied)
+
+
+    def test_record_result_negative_home_score(self):
+        with self.assertRaises(ValueError):
+            record_result(self.fixtures,"M001",-1, 2)
+
+    def test_record_result_negative_away_score(self):
+        with self.assertRaises(ValueError):
+            record_result(self.fixtures, "M001", 2,-1)
