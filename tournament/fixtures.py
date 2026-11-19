@@ -29,8 +29,8 @@ def generate_fixtures(teams):
 def record_result(fixtures, fixture_id, home_score, away_score):
     if fixture_id not in fixtures: 
         raise ValueError("Fixture does not exist")
-    if fixtures[fixture_id]["status"] == "played":
-        raise ValueError("Fixture has already been played")    
+    if fixtures[fixture_id]["status"] != "pending":
+        raise ValueError("Fixture is not pending")    
 
     if not (
         type(home_score) is int and 

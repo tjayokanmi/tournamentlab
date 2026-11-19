@@ -89,7 +89,7 @@ class TestRecordResult(unittest.TestCase):
         "id": "M002",
         "home_id": "TM001",
         "away_id": "TM003",
-        "status": "pending",
+        "status": "cancelled",
         "home_score": None,
         "away_score": None
     },
@@ -119,3 +119,30 @@ class TestRecordResult(unittest.TestCase):
     def test_record_result_negative_away_score(self):
         with self.assertRaises(ValueError):
             record_result(self.fixtures, "M001", 2,-1)
+    
+    def test_record_result_float_score(self):
+        with self.assertRaises(ValueError):
+            record_result(self.fixtures, "M001", 2.5, 1)
+
+    def test_record_result_string_score(self):
+        with self.assertRaises(ValueError):
+            record_result(self.fixtures,"M001", "2", 1)
+
+    def test_record_result_boolean_score(self):
+        with self.assertRaises(ValueError):
+            record_result(self.fixtures, "M001", True, 1)
+
+    def test_record_result_nonexistent_fixture(self):
+        with self.assertRaises(ValueError):
+            record_result(self.fixtures, "M999", 2, 1)
+    
+    def test_record_result_invalid_result(self):
+        copied = deepcopy(self.fixtures)
+        with self.assertRaises(ValueError):
+            record_result(self.fixtures, "M001", 3, -1)
+
+        self.assertEqual(self.fixtures,copied)
+
+    def test_record_result_cancelled_match(self):
+        with self.assertRaises(ValueError):
+            record_result(self.fixtures, "M002", 2, 1)
