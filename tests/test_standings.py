@@ -199,3 +199,59 @@ class TestCalculateStandings(unittest.TestCase):
 
         self.assertEqual(self.teams, original_teams)
         self.assertEqual(self.fixtures1, original_fixtures)
+
+    def test_cancelled_fixtures_are_ignored(self):
+        cancelled_fixtures = {
+            "M001": {
+                "id": "M001",
+                "home_id": "TM001",
+                "away_id": "TM002",
+                "status": "cancelled",
+                "home_score": None,
+                "away_score": None
+            }
+        }
+
+        results = calculate_standings(self.teams, cancelled_fixtures)
+
+        expected_stats = {
+            "MP": 0,
+            "W": 0,
+            "D": 0,
+            "L": 0,
+            "GF": 0,
+            "GA": 0,
+            "GD": 0,
+            "Pts": 0
+        }
+
+        for team in results:
+            for stat, expected_value in expected_stats.items():
+                self.assertEqual(team[stat], expected_value)
+
+    def test_standings_goals_for_tiebreaker(self):
+        fixtures = {
+            "M001": {
+                "id": "M001",
+                "home_id": "TM001",
+                "away_id": "TM002",
+                "status": "played",
+                "home_score": 3,
+                "away_score": 1
+            },
+            "M002": {
+                "id": "M002",
+                "home_id": "TM003",
+                "away_id": "TM004",
+                "status": "played",
+                "home_score": 2,
+                "away_score": 0
+            }
+        }
+
+        results = calculate_standings(self.teams, fixtures)
+
+        expected_order = ["TM001", "TM003", "TM002", "TM004"]
+        actual_order = [team["id"] for team in results]
+
+        self.assertEqual(actual_order, expected_order)

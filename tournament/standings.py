@@ -57,7 +57,7 @@ def calculate_standings(teams, fixtures):
 
     ranked_standings = sorted(
             standing.values(),
-            key= lambda team: (
+            key=lambda team: (
                 -team["Pts"],
                 -team["GD"],
                 -team["GF"],
